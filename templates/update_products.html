@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% block action %}"/updateProductsReq"{% endblock %}
+{% block function %}"Update"{% endblock %}
+{% block fields %}
+    <br>
+    Item Number:
+    <br>
+    <input type="number" class="form-control" name="Item_no">
+    <br>
+    Name:
+    <br>
+    <textarea type="text" class="form-control" name="Name"></textarea>
+    <br>
+    Price (Only two decimal places):
+    <br>
+    <input type="float" class="form-control" name="Price">
+    <br>
+    Description:
+    <br>
+    <textarea type="text" class="form-control" name="Description"></textarea>
+    <br>
+    Warranty (In months):
+    <br>
+    <input type="number" class="form-control" name="Warranty">
+    <br>
+{% endblock %}
