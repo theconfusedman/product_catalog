@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_paginate import Pagination, get_page_args
 import pymysql.cursors
 import re
-from string import digits
 
 # Connect to the database
 connection = pymysql.connect(host='localhost',
@@ -54,7 +53,7 @@ def products():
             print(item_number_list)   
         return render_template("view_products.html", items=pagination_result, cols=cols, total_pages=total_pages, page=page, success='')
     except Exception as e:
-        return render_template("view_products.html", items=[], cols=[], success='Unnable to view products: ' + str(e))
+        return render_template("view_products.html", items=[], cols=[], total_pages=0, page=0, success='Unnable to view products: ' + str(e))
     
 @app.route('/addProducts')
 def add_products_page():
@@ -63,11 +62,11 @@ def add_products_page():
 
 @app.route('/addProductsReq', methods=['GET'])
 def add_products():
-    Item_no = int(request.args.get('Item_no').strip())
+    Item_no = request.args.get('Item_no').strip()
     Name = request.args.get('Name').strip()
-    Price = float(request.args.get('Price').strip())
+    Price = request.args.get('Price').strip()
     Description = request.args.get('Description').strip()
-    Warranty = int(request.args.get('Warranty').strip())
+    Warranty = request.args.get('Warranty').strip()
     print ('Form inputs line reached')
     if Item_no == '' or Name == '' or Price == '' or Description == '' or Warranty == '':
         print ('no inputs')
@@ -79,7 +78,7 @@ def add_products():
             print ("sql", sql)
             cursor.execute(sql, (Item_no, Name, Price, Description, Warranty))
             connection.commit()
-        return render_template("add_products.html", sucess='Sucessful')
+        return render_template("add_products.html", success='Sucessful')
     except Exception as e:
         print ('exception', e)
         return render_template("add_products.html", success='Unable to add product: ' + str(e))
@@ -90,11 +89,11 @@ def update_products_page():
 
 @app.route('/updateProductsReq', methods=['GET'])
 def update_products():
-    Item_no = int(request.args.get('Item_no').strip())
+    Item_no = request.args.get('Item_no').strip()
     Name = request.args.get('Name').strip()
-    Price = float(request.args.get('Price').strip())
+    Price = request.args.get('Price').strip()
     Description = request.args.get('Description').strip()
-    Warranty = int(request.args.get('Warranty').strip())
+    Warranty = request.args.get('Warranty').strip()
 
     if Item_no == '' or Name == '' or Price == '' or Description == '' or Warranty == '':
         return render_template("add_products.html", success='Please fill all fields.')
@@ -106,6 +105,7 @@ def update_products():
             connection.commit()
             return render_template("update_products.html", success='Successful')
     except Exception as e:
+        print ('exception', e)
         return render_template("update_products.html", success='Can\'t update Paper: ' + str(e))
     
 @app.route('/deleteProducts')
@@ -114,7 +114,7 @@ def delete_products_page():
 
 @app.route('/deleteProductsReq', methods=['GET'])
 def delete_products():
-    Item_no = int(request.args.get('Item_no').strip())
+    Item_no = request.args.get('Item_no').strip()
     if Item_no == '':
         return render_template("delete_products.html", success='Item number cannot be empty')
     try:
@@ -124,6 +124,7 @@ def delete_products():
             connection.commit()
             return render_template("delete_products.html", success='Successful')
     except Exception as e:
+        print ('exception', e)
         return render_template("delete_products.html", success='Can\'t delete paper: ' + str(e))
     
 if __name__ == "__main__":
