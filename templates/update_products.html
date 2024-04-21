@@ -5,22 +5,22 @@
     <br>
     Item Number:
     <br>
-    <input type="number" class="form-control" name="Item_no">
+    <input type="number" min="1" class="form-control" name="Item_no">
     <br>
     Name:
     <br>
-    <textarea type="text" class="form-control" name="Name"></textarea>
+    <textarea type="text" style= "resize: vertical" class="form-control" name="Name"></textarea>
     <br>
     Price (Only two decimal places):
     <br>
-    <input type="number" step="0.01" class="form-control" name="Price">
+    <input type="number" step="0.01" min="0" class="form-control" name="Price">
     <br>
     Description:
     <br>
-    <textarea type="text" class="form-control" name="Description"></textarea>
+    <textarea type="text" style= "resize: vertical" class="form-control" name="Description"></textarea>
     <br>
-    Warranty (In months):
+    Warranty (In months and 0 if N/A):
     <br>
-    <input type="number" class="form-control" name="Warranty">
+    <input type="number" min="0" class="form-control" name="Warranty">
     <br>
 {% endblock %}

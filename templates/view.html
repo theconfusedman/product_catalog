@@ -51,11 +51,11 @@ a.button {
   text-decoration: none;
 }
 
-a.paginate {
+a.button {
   background: #22345a;
   color: white;
-  line-height: 45px;
-  width: 120px;
+  line-height: 50px;
+  width: 100px;
   font-size: 1.2em;
   font-family: Lucida, Helvetica, sans-serif;
   border-radius: 5px;
@@ -63,7 +63,11 @@ a.paginate {
   text-align: center;
   display: inline-block;
   text-decoration: none;
-  font-weight: bold;
+}
+
+a.button:hover {
+  background-color: #1e272e;
+  color: white;
 }
 
 a.paginate {
@@ -79,6 +83,11 @@ a.paginate {
   display: inline-block;
   text-decoration: none;
   font-weight: bold;
+}
+
+a.paginate:hover {
+  background-color: #1e272e;
+  color: white;
 }
 
 .paginateText {
@@ -162,13 +171,15 @@ a.paginate {
         {% for item in items %}
         <tr>
             {% for col in cols %}
-            <td>{{ item[col] }} </td>
-            {% if col == 'Warranty' %}
-            <td>
-                <a href="/updateProducts" target="_blank" class="button"> Edit </a>
-                <a href="/deleteProducts" target="_blank" class="button"> Delete </a> 
-            </td>
-            {% endif %}
+              {% if col == 'Status' %}
+                <td>
+                  {% set name = item['Name'] %} {% set price = item['Price'] %} {% set description = item['Description'] %} {% set warranty = item['Warranty'] %}
+                  <a href="/update/{{ item['Item_no'] }}/{{ item['Name'] }}/{{ item['Price'] }}/{{ item['Description'] }}/{{ item['Warranty'] }}" target="_blank" class="button"> Edit </a>
+                  <a href="/delete/{{ item['Item_no'] }}" target="_self" class="button"> Delete </a>
+                </td>
+              {% else %}
+                <td>{{ item[col] }}</td>
+              {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}
@@ -178,12 +189,9 @@ a.paginate {
 <div class="center">
 {% if page > 1 %}
 <a href="{{ url_for('products', page=page-1) }}" class="paginate">Previous</a>
-<span class="paginateText">Page {{page}} of {{total_pages}}</span>
-<a class="paginate">Next</a>
 {% endif %}
-{% if page < total_pages %}
-<a class="paginate">Previous</a>
 <span class="paginateText">Page {{page}} of {{total_pages}}</span>
+{% if page < total_pages %}
 <a href="{{ url_for('products', page=page+1) }}" class="paginate">Next</a>
 {% endif %}
 </div>
